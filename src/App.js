@@ -14,22 +14,6 @@ function App() {
     const orderType = e.target?.orderType?.value;
     const totalAmount = e.target?.totalAmount?.value;
 
-    // const orderDetails = [
-    //   {
-    //     customerName,
-    //     address,
-    //     postalCode,
-    //     phoneNumber,
-    //   },
-    //   {
-    //     itemsDetails,
-    //     totalAmount,
-    //     deliveryDate,
-    //     timeSlot,
-    //     orderType,
-    //   },
-    // ];
-
     let customerAndOrderDetails = {
       customerDetails: {
         customerName,
@@ -50,13 +34,24 @@ function App() {
 
     const url = `http://localhost:5000/api/v1/orders/createOrder`;
 
-    axios.post(url, customerAndOrderDetails).then(function (response) {
-      console.log(response);
+    axios
+      .post(url, customerAndOrderDetails)
+      .then(function (response) {
+        console.log(response);
 
-      if (response.status === 200) {
-        alert("Order Created Successfully");
-      }
-    });
+        if (response?.status === 200) {
+          alert("Order Created Successfully");
+
+          e.target.reset();
+        }
+
+        if (response?.status === 400) {
+          alert("Order Created Failed");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   return (
     <div className="App">

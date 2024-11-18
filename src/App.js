@@ -13,27 +13,44 @@ function App() {
     const timeSlot = e.target?.timeSlot?.value;
     const orderType = e.target?.orderType?.value;
     const totalAmount = e.target?.totalAmount?.value;
-    const orderDetails = [
-      {
+
+    // const orderDetails = [
+    //   {
+    //     customerName,
+    //     address,
+    //     postalCode,
+    //     phoneNumber,
+    //   },
+    //   {
+    //     itemsDetails,
+    //     totalAmount,
+    //     deliveryDate,
+    //     timeSlot,
+    //     orderType,
+    //   },
+    // ];
+
+    let customerAndOrderDetails = {
+      customerDetails: {
         customerName,
         address,
         postalCode,
         phoneNumber,
       },
-      {
+      orderDetails: {
         itemsDetails,
         totalAmount,
         deliveryDate,
         timeSlot,
         orderType,
       },
-    ];
+    };
 
-    console.log(orderDetails);
+    console.log(customerAndOrderDetails);
 
     const url = `http://localhost:5000/api/v1/orders/createOrder`;
 
-    axios.post(url, orderDetails).then(function (response) {
+    axios.post(url, customerAndOrderDetails).then(function (response) {
       console.log(response);
 
       if (response.status === 200) {

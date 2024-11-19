@@ -13,6 +13,8 @@ const CreateNewOrder = () => {
     const timeSlot = e.target?.timeSlot?.value;
     const orderType = e.target?.orderType?.value;
     const totalAmount = e.target?.totalAmount?.value;
+    const paymentType = e.target?.paymentType?.value;
+    const trackId = e.target?.trackId?.value;
 
     let customerAndOrderDetails = {
       customerDetails: {
@@ -27,6 +29,12 @@ const CreateNewOrder = () => {
         deliveryDate,
         timeSlot,
         orderType,
+      },
+      paymentDetails: {
+        paymentType: paymentType,
+        paymentStatus: "Pending",
+        paymentAmount: totalAmount,
+        trackId: trackId,
       },
     };
 
@@ -117,7 +125,6 @@ const CreateNewOrder = () => {
               </label>
               <input
                 type="date"
-                required
                 placeholder="Delivery Date "
                 name="deliveryDate"
                 class="input input-bordered input-success w-full max-w-xs"
@@ -151,7 +158,38 @@ const CreateNewOrder = () => {
             </select>
 
             <div className="label">
-              <span className="label-text"> Total Amount : </span>
+              <span className="label-text"> Payment Type : </span>
+            </div>
+            <select
+              name="paymentType"
+              className="select select-accent w-full max-w-xs"
+            >
+              <option selected>Cash On Delivery</option>
+              <option>Bank Transfer</option>
+            </select>
+
+            <div className="label">
+              <span className="label-text">Track Id : </span>
+            </div>
+            <input
+              type="number"
+              name="trackId"
+              placeholder="Type Shipping Fee"
+              className="input input-accent w-full max-w-xs"
+            />
+
+            <div className="label">
+              <span className="label-text"> Shipping Fee : </span>
+            </div>
+            <input
+              type="number"
+              name="shippingFee"
+              placeholder="Type Shipping Fee"
+              className="input input-accent w-full max-w-xs"
+            />
+
+            <div className="label">
+              <span className="label-text"> In Total Amount : </span>
             </div>
             <input
               type="number"

@@ -1,23 +1,25 @@
 import React from "react";
 
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
+let url = `${process.env.REACT_APP_apiLink}/api/v1/orders/getAllOrderDetails`;
+console.log(url);
 
 const OrderLists = () => {
+  const navigate = useNavigate();
+
+  // GET ALL ORDER DETAILS
   const { isPending, error, data } = useQuery({
     queryKey: ["getAllOrderDetails"],
-    queryFn: () =>
-      fetch("http://localhost:5000/api/v1/orders/getAllOrderDetails").then(
-        (res) => res.json()
-      ),
+    queryFn: () => fetch(url).then((res) => res.json()),
   });
 
+  // handle loading
   if (isPending) return <h1>Loading</h1>;
 
+  // handle error
   if (error) return <h1>{error.message}</h1>;
-
-  console.log(data);
-
-  // const date = new Date(data)
 
   return (
     <div>
@@ -26,7 +28,11 @@ const OrderLists = () => {
       </h1>
 
       {data.map((item) => (
-        <div className="card bg-base-100 w-full shadow-xl">
+        <div
+          key={item._id}
+          onClick={() => navigate(`/updateOrderDetails/${item._id}`)}
+          className="card bg-base-100 w-full shadow-xl"
+        >
           <div className="card-body">
             <h2 className="card-title">
               {item.customerId.customerName} | ¥ {item.totalAmount}
@@ -38,7 +44,14 @@ const OrderLists = () => {
             <div className="card-actions justify-end">
               <div className="badge badge-outline">Fashion</div>
               <div className="badge badge-outline">Products</div>
-              <div className="badge badge-secondary">Delivered</div>
+
+              {item.deliveryStatus === "Pending" ? (
+                <div className="badge badge-secondary">Pending</div>
+              ) : null}
+
+              {item.deliveryStatus === "Delivered" ? (
+                <div className="badge badge-success">Delivered</div>
+              ) : null}
             </div>
           </div>
         </div>

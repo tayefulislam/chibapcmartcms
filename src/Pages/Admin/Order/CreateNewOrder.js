@@ -24,7 +24,11 @@ const CreateNewOrder = () => {
         phoneNumber,
       },
       orderDetails: {
-        itemsDetails,
+        itemsDetails: [
+          {
+            itemName: itemsDetails,
+          },
+        ],
         totalAmount,
         deliveryDate,
         timeSlot,

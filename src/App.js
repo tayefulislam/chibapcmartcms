@@ -3,6 +3,7 @@ import "./App.css";
 import CreateNewOrder from "./Pages/Admin/Order/CreateNewOrder";
 import OrderLists from "./Pages/Admin/Order/OrderLists";
 import UpdateOrderDetails from "./Pages/Admin/Order/UpdateOrderDetails";
+import OrderDetails from "./Pages/Admin/Order/OrderDetails";
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
           path="/updateOrderDetails/:orderId"
           element={<UpdateOrderDetails />}
         ></Route>
+
+        <Route path="/orderDetails/:orderId" element={<OrderDetails />}></Route>
       </Routes>
     </div>
   );

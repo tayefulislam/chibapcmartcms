@@ -39,6 +39,52 @@ const OrderDetails = () => {
         {data?.deliveryStatus === "Delivered" ? (
           <div className="badge badge-success text-neutral-50">Delivered</div>
         ) : null}
+
+        {data?.deliveryStatus === "Redelivery Done" ? (
+          <div className="badge badge-accent text-neutral-50">
+            Redelivery Done
+          </div>
+        ) : null}
+
+        {data?.deliveryStatus === "Returned" ? (
+          <div className="badge badge-error text-neutral-50">Returned</div>
+        ) : null}
+
+        {data?.deliveryStatus === "Out for delivery" ? (
+          <div className="badge badge-warning text-neutral-50">
+            Out for delivery
+          </div>
+        ) : null}
+
+        {data?.deliveryStatus === "Absence" ? (
+          <div className="badge badge-error text-neutral-50">Absence</div>
+        ) : null}
+
+        {data?.deliveryStatus === "Reached Post Office" ? (
+          <div className="badge badge-info text-neutral-50">
+            Reached Post Office
+          </div>
+        ) : null}
+
+        {data?.deliveryStatus === "Reached Post Office" ? (
+          <div className="badge badge-info text-neutral-50">
+            Reached Post Office
+          </div>
+        ) : null}
+
+        {data?.deliveryStatus === "En route" ? (
+          <div className="badge badge-info text-neutral-50">En route</div>
+        ) : null}
+
+        {data?.deliveryStatus === "Posting/Collection" ? (
+          <div className="badge badge-info text-neutral-50">
+            Posting/Collection
+          </div>
+        ) : null}
+
+        {data?.deliveryStatus === "Investigation" ? (
+          <div className="badge badge-error text-neutral-50">Investigation</div>
+        ) : null}
       </div>
 
       <div className="font-semibold">

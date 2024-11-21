@@ -46,6 +46,7 @@ const OrderLists = () => {
             <div className="badge badge-outline font-semibold">
               {item?.orderType === "Regular" ? "Regular" : "Pre-Order"}
             </div>
+
             {item?.deliveryStatus === "Pending" ? (
               <div className="badge badge-secondary">Pending</div>
             ) : null}
@@ -53,6 +54,54 @@ const OrderLists = () => {
             {item?.deliveryStatus === "Delivered" ? (
               <div className="badge badge-success text-neutral-50">
                 Delivered
+              </div>
+            ) : null}
+
+            {item?.deliveryStatus === "Redelivery Done" ? (
+              <div className="badge badge-accent text-neutral-50">
+                Redelivery Done
+              </div>
+            ) : null}
+
+            {item?.deliveryStatus === "Returned" ? (
+              <div className="badge badge-error text-neutral-50">Returned</div>
+            ) : null}
+
+            {item?.deliveryStatus === "Out for delivery" ? (
+              <div className="badge badge-warning text-neutral-50">
+                Out for delivery
+              </div>
+            ) : null}
+
+            {item?.deliveryStatus === "Absence" ? (
+              <div className="badge badge-error text-neutral-50">Absence</div>
+            ) : null}
+
+            {item?.deliveryStatus === "Reached Post Office" ? (
+              <div className="badge badge-info text-neutral-50">
+                Reached Post Office
+              </div>
+            ) : null}
+
+            {item?.deliveryStatus === "Reached Post Office" ? (
+              <div className="badge badge-info text-neutral-50">
+                Reached Post Office
+              </div>
+            ) : null}
+
+            {item?.deliveryStatus === "En route" ? (
+              <div className="badge badge-info text-neutral-50">En route</div>
+            ) : null}
+
+            {item?.deliveryStatus === "Posting/Collection" ? (
+              <div className="badge badge-info text-neutral-50">
+                Posting/Collection
+              </div>
+            ) : null}
+
+            {item?.deliveryStatus === "Investigation" ? (
+              <div className="badge badge-error text-neutral-50">
+                Investigation
               </div>
             ) : null}
           </div>

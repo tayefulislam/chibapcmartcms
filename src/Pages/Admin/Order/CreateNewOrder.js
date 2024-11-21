@@ -38,6 +38,8 @@ const CreateNewOrder = () => {
     const totalAmount = e.target?.totalAmount?.value;
     const paymentType = e.target?.paymentType?.value;
     const trackId = e.target?.trackId?.value;
+    const bankName = e.target?.bankName?.value;
+    const transactionNumber = e.target?.transactionNumber?.value;
 
     let customerAndOrderDetails = {
       customerDetails: {
@@ -58,35 +60,37 @@ const CreateNewOrder = () => {
         orderType,
       },
       paymentDetails: {
-        paymentType: paymentType,
+        paymentType,
         paymentStatus,
         paymentAmount: totalAmount,
-        trackId: trackId,
+        transactionNumber,
+        trackId,
+        bankName,
       },
     };
 
     console.log(customerAndOrderDetails);
 
-    // const url = `http://localhost:5000/api/v1/orders/createOrder`;
+    const url = `${process.env.REACT_APP_apiLink}/api/v1/orders/createOrder`;
 
-    // axios
-    //   .post(url, customerAndOrderDetails)
-    //   .then(function (response) {
-    //     console.log(response);
+    axios
+      .post(url, customerAndOrderDetails)
+      .then(function (response) {
+        console.log(response);
 
-    //     if (response?.status === 200) {
-    //       alert("Order Created Successfully");
+        if (response?.status === 200) {
+          alert("Order Created Successfully");
 
-    //       e.target.reset();
-    //     }
+          e.target.reset();
+        }
 
-    //     if (response?.status === 400) {
-    //       alert("Order Created Failed");
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+        if (response?.status === 400) {
+          alert("Order Created Failed");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   return (
     <div>

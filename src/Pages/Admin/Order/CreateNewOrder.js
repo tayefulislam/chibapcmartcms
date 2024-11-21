@@ -2,6 +2,29 @@ import React from "react";
 import axios from "axios";
 
 const CreateNewOrder = () => {
+  const [paymentType, setPaymentType] = React.useState("");
+  let [paymentStatus, setPaymentStatus] = React.useState("");
+
+  const handlePaymentTypeAndStatus = (type) => {
+    if (type === "Cash On Delivery") {
+      setPaymentType("Cash On Delivery");
+      setPaymentStatus("Unpaid");
+    }
+
+    if (type === "Bank Transfer") {
+      setPaymentType("Bank Transfer");
+      setPaymentStatus("Paid");
+    }
+
+    if (type === "In Shop") {
+      setPaymentType("In Shop");
+      setPaymentStatus("");
+    }
+  };
+
+  console.log(paymentType);
+  console.log(paymentStatus);
+
   const handleRequest = (e) => {
     e.preventDefault();
     const customerName = e.target?.customerName?.value;
@@ -36,7 +59,7 @@ const CreateNewOrder = () => {
       },
       paymentDetails: {
         paymentType: paymentType,
-        paymentStatus: "Pending",
+        paymentStatus,
         paymentAmount: totalAmount,
         trackId: trackId,
       },
@@ -44,26 +67,26 @@ const CreateNewOrder = () => {
 
     console.log(customerAndOrderDetails);
 
-    const url = `http://localhost:5000/api/v1/orders/createOrder`;
+    // const url = `http://localhost:5000/api/v1/orders/createOrder`;
 
-    axios
-      .post(url, customerAndOrderDetails)
-      .then(function (response) {
-        console.log(response);
+    // axios
+    //   .post(url, customerAndOrderDetails)
+    //   .then(function (response) {
+    //     console.log(response);
 
-        if (response?.status === 200) {
-          alert("Order Created Successfully");
+    //     if (response?.status === 200) {
+    //       alert("Order Created Successfully");
 
-          e.target.reset();
-        }
+    //       e.target.reset();
+    //     }
 
-        if (response?.status === 400) {
-          alert("Order Created Failed");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    //     if (response?.status === 400) {
+    //       alert("Order Created Failed");
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
   return (
     <div>
@@ -165,32 +188,90 @@ const CreateNewOrder = () => {
               <span className="label-text"> Payment Type : </span>
             </div>
             <select
+              required
+              onChange={(e) => handlePaymentTypeAndStatus(e?.target?.value)}
+              // onChange={(e) => setPaymentType(e?.target?.value)}
               name="paymentType"
               className="select select-accent w-full max-w-xs"
             >
-              <option selected>Cash On Delivery</option>
-              <option>Bank Transfer</option>
+              <option value="" disabled selected>
+                Select Payment Type
+              </option>
+              <option value="Cash On Delivery">Cash On Delivery</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="In Shop">In Shop</option>
             </select>
 
-            <div className="label">
-              <span className="label-text">Track Id : </span>
-            </div>
-            <input
-              type="number"
-              name="trackId"
-              placeholder="Type Shipping Fee"
-              className="input input-accent w-full max-w-xs"
-            />
+            {paymentType === "Bank Transfer" && (
+              <>
+                <div>
+                  <div className="label">
+                    <span className="label-text"> Bank Name : </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="bankName"
+                    placeholder="Type Bank Name"
+                    className="input input-accent w-full max-w-xs"
+                  />
+                </div>
+                <div>
+                  <div className="label">
+                    <span className="label-text"> transaction Number : </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="transactionNumber"
+                    placeholder="Type transaction number"
+                    className="input input-accent w-full max-w-xs"
+                  />
+                </div>
+              </>
+            )}
 
-            <div className="label">
-              <span className="label-text"> Shipping Fee : </span>
-            </div>
-            <input
-              type="number"
-              name="shippingFee"
-              placeholder="Type Shipping Fee"
-              className="input input-accent w-full max-w-xs"
-            />
+            {paymentType === "In Shop" && (
+              <div>
+                <div className="label">
+                  <span className="label-text"> Payment Status : </span>
+                </div>
+                <select
+                  required
+                  name="paymentStatus"
+                  className="select select-accent w-full max-w-xs"
+                  onChange={(e) => setPaymentStatus(e?.target?.value)}
+                >
+                  <option value="" selected disabled>
+                    Select Payment Status
+                  </option>
+
+                  <option value="Paid">Paid</option>
+                  <option value="Unpaid">Unpaid</option>
+                </select>
+              </div>
+            )}
+
+            {paymentType !== "Shop Pickup" && (
+              <>
+                <div className="label">
+                  <span className="label-text">Track Id : </span>
+                </div>
+                <input
+                  type="number"
+                  name="trackId"
+                  placeholder="Type Track Id Code"
+                  className="input input-accent w-full max-w-xs"
+                />
+                <div className="label">
+                  <span className="label-text"> Shipping Fee : </span>
+                </div>
+                <input
+                  type="number"
+                  name="shippingFee"
+                  placeholder="Type Shipping Fee"
+                  className="input input-accent w-full max-w-xs"
+                />{" "}
+              </>
+            )}
 
             <div className="label">
               <span className="label-text"> In Total Amount : </span>

@@ -67,6 +67,10 @@ const OrderLists = () => {
               <div className="badge badge-error text-neutral-50">Returned</div>
             ) : null}
 
+            {item?.deliveryStatus === "Canceled" ? (
+              <div className="badge badge-error text-neutral-50">Canceled</div>
+            ) : null}
+
             {item?.deliveryStatus === "Out for delivery" ? (
               <div className="badge badge-warning text-neutral-50">
                 Out for delivery

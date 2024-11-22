@@ -40,6 +40,9 @@ const CreateNewOrder = () => {
     const trackId = e.target?.trackId?.value;
     const bankName = e.target?.bankName?.value;
     const transactionNumber = e.target?.transactionNumber?.value;
+    const deliveryCost = e.target?.deliveryCost?.value;
+
+    const courierName = paymentType !== "In Shop" ? "" : "JAPAN POST";
 
     let customerAndOrderDetails = {
       customerDetails: {
@@ -55,6 +58,7 @@ const CreateNewOrder = () => {
           },
         ],
         totalAmount,
+        deliveryCost,
         deliveryDate,
         timeSlot,
         orderType,
@@ -64,6 +68,7 @@ const CreateNewOrder = () => {
         paymentStatus,
         paymentAmount: totalAmount,
         transactionNumber,
+        courierName,
         trackId,
         bankName,
       },
@@ -254,7 +259,7 @@ const CreateNewOrder = () => {
               </div>
             )}
 
-            {paymentType !== "Shop Pickup" && (
+            {paymentType !== "In Shop" && (
               <>
                 <div className="label">
                   <span className="label-text">Track Id : </span>
@@ -265,15 +270,16 @@ const CreateNewOrder = () => {
                   placeholder="Type Track Id Code"
                   className="input input-accent w-full max-w-xs"
                 />
+
                 <div className="label">
                   <span className="label-text"> Shipping Fee : </span>
                 </div>
                 <input
                   type="number"
-                  name="shippingFee"
+                  name="deliveryCost"
                   placeholder="Type Shipping Fee"
                   className="input input-accent w-full max-w-xs"
-                />{" "}
+                />
               </>
             )}
 

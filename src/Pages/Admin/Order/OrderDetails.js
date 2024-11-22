@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const OrderDetails = () => {
   let updateState = true;
@@ -17,7 +18,7 @@ const OrderDetails = () => {
   //   console.log(url);
 
   // GET ALL ORDER DETAILS
-  const { isPending, error, data } = useQuery({
+  const { isPending, error, data, refetch } = useQuery({
     queryKey: [`getSingleOrderWithCustomerPaymentDetails/${orderId}`],
     queryFn: () => fetch(url).then((res) => res.json()),
   });
@@ -85,6 +86,9 @@ const OrderDetails = () => {
     const deliveryCost = e.target?.deliveryCost?.value;
 
     let customerAndOrderDetails = {
+      customerId: data?.customerId?._id,
+      orderId: data?._id,
+      paymentObjId: data?.paymentObjId?._id,
       customerDetails: {
         customerName: customerName,
         address,
@@ -102,6 +106,7 @@ const OrderDetails = () => {
       },
       paymentDetails: {
         paymentType,
+
         paymentStatus,
         paymentAmount: totalAmount,
         transactionNumber,
@@ -109,6 +114,25 @@ const OrderDetails = () => {
         bankName,
       },
     };
+
+    const url = `${process.env.REACT_APP_apiLink}/api/v1/orders/updateOrderDetails`;
+
+    axios
+      .put(url, customerAndOrderDetails)
+      .then(function (response) {
+        console.log(response);
+
+        if (response?.status === 200) {
+          refetch();
+        }
+
+        if (response?.status === 400) {
+          alert("Order Created Failed");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     console.log(customerAndOrderDetails);
   };
@@ -307,7 +331,6 @@ const OrderDetails = () => {
                           type="text"
                           required
                           defaultValue={data?.customerId?.customerName}
-                          disabled
                           placeholder="Customer Name"
                           name="customerName"
                           class="input input-bordered input-error w-full max-w-xs"
@@ -649,7 +672,7 @@ const OrderDetails = () => {
                               </option>
                               <option
                                 value="Created"
-                                selected={data?.deliveryStatus === "19-21"}
+                                selected={data?.deliveryStatus === "Created"}
                               >
                                 Created
                               </option>

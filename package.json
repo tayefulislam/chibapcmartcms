@@ -2,6 +2,9 @@
   "name": "chibapcmartcms",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://dev1.chibapcmart.com/", 
+
+
   "dependencies": {
     "@tanstack/react-query": "^5.60.5",
     "@testing-library/jest-dom": "^5.17.0",

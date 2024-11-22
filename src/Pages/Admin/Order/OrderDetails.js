@@ -3,8 +3,11 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const OrderDetails = () => {
-  let [paymentType, setPaymentType] = React.useState("");
-  let [paymentStatus, setPaymentStatus] = React.useState("");
+  let updateState = true;
+
+  console.log("1st Update State", updateState);
+  let [paymentType, setPaymentType] = React.useState();
+  let [paymentStatus, setPaymentStatus] = React.useState();
 
   const { orderId } = useParams();
 
@@ -27,7 +30,7 @@ const OrderDetails = () => {
   // setPaymentStatus(data?.paymentObjId?.paymentStatus);
   // setPaymentType(data?.paymentObjId?.paymentType);
 
-  const handlePaymentTypeAndStatus = (type) => {
+  const handlePaymentTypeAndStatus = (type, status) => {
     if (type === "Cash On Delivery") {
       setPaymentType("Cash On Delivery");
       setPaymentStatus("Unpaid");
@@ -40,15 +43,31 @@ const OrderDetails = () => {
 
     if (type === "In Shop") {
       setPaymentType("In Shop");
-      setPaymentStatus("");
+      // setPaymentStatus("");
+
+      // setPaymentStatus === "" ? setPaymentStatus("Paid") : null;
+
+      if (status) {
+        setPaymentStatus(status);
+      }
     }
   };
 
+  if (updateState) {
+    updateState = false;
+  }
+
+  console.log("1st Update State", updateState);
+
+  console.log();
+
   const handleUpdate = (e) => {
     e.preventDefault();
-
-    console.log("Hello");
   };
+
+  console.log("paymentType", paymentType);
+
+  console.log("paymentStatus", paymentStatus);
 
   return (
     <>
@@ -198,7 +217,16 @@ const OrderDetails = () => {
       {/* Update Order Details */}
 
       <div className="flex justify-center mt-2">
-        <label htmlFor="my_modal_6" className="btn items-center">
+        <label
+          onClick={() =>
+            handlePaymentTypeAndStatus(
+              data?.paymentObjId?.paymentType,
+              data?.paymentObjId?.paymentStatus
+            )
+          }
+          htmlFor="my_modal_6"
+          className="btn items-center"
+        >
           Update Details
         </label>
       </div>
@@ -390,7 +418,10 @@ const OrderDetails = () => {
                         <select
                           required
                           onChange={(e) =>
-                            handlePaymentTypeAndStatus(e?.target?.value)
+                            handlePaymentTypeAndStatus(
+                              e?.target?.value,
+                              data.paymentObjId.paymentStatus
+                            )
                           }
                           name="paymentType"
                           className="select select-accent w-full max-w-xs"
@@ -485,7 +516,7 @@ const OrderDetails = () => {
                           </div>
                         )}
 
-                        {paymentType !== "Shop Pickup" && (
+                        {paymentType !== "In Shop" && (
                           <>
                             <div className="label">
                               <span className="label-text">Track Id : </span>
@@ -547,7 +578,7 @@ const OrderDetails = () => {
                             </label>
                         </div> */}
 
-                      <div class="form-control w-full max-w-xs">
+                      {/* <div class="form-control w-full max-w-xs">
                         <label class="label">
                           <span class="label-text">District * :</span>
                         </label>
@@ -565,8 +596,8 @@ const OrderDetails = () => {
                             Brahmanbaria
                           </option>
                         </select>
-                      </div>
-                      <div class="form-control w-full max-w-xs">
+                      </div> */}
+                      {/* <div class="form-control w-full max-w-xs">
                         <label class="label">
                           <span class="label-text">Area :</span>
                         </label>
@@ -579,9 +610,9 @@ const OrderDetails = () => {
                           class="input input-bordered input-error w-full max-w-xs"
                         />
                         <label class="label"></label>
-                      </div>
+                      </div> */}
 
-                      <div className="flex justify-around">
+                      <div className="flex justify-around mt-2">
                         <input className="btn" type="submit" value="Submit" />
                         <label htmlFor="my_modal_6" className="btn">
                           Close!

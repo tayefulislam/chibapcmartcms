@@ -4,21 +4,25 @@ import axios from "axios";
 const CreateNewOrder = () => {
   const [paymentType, setPaymentType] = React.useState("");
   let [paymentStatus, setPaymentStatus] = React.useState("");
+  let [courierName, setCourierName] = React.useState("");
 
   const handlePaymentTypeAndStatus = (type) => {
     if (type === "Cash On Delivery") {
       setPaymentType("Cash On Delivery");
       setPaymentStatus("Unpaid");
+      setCourierName("JAPAN POST");
     }
 
     if (type === "Bank Transfer") {
       setPaymentType("Bank Transfer");
       setPaymentStatus("Paid");
+      setCourierName("JAPAN POST");
     }
 
     if (type === "In Shop") {
       setPaymentType("In Shop");
       setPaymentStatus("");
+      setCourierName("");
     }
   };
 
@@ -41,8 +45,7 @@ const CreateNewOrder = () => {
     const bankName = e.target?.bankName?.value;
     const transactionNumber = e.target?.transactionNumber?.value;
     const deliveryCost = e.target?.deliveryCost?.value;
-
-    const courierName = paymentType !== "In Shop" ? "" : "JAPAN POST";
+    const deliveryStatus = e.target?.deliveryStatus?.value;
 
     let customerAndOrderDetails = {
       customerDetails: {
@@ -62,6 +65,7 @@ const CreateNewOrder = () => {
         deliveryDate,
         timeSlot,
         orderType,
+        deliveryStatus,
       },
       paymentDetails: {
         paymentType,
@@ -157,7 +161,12 @@ const CreateNewOrder = () => {
 
             <div class="form-control w-full max-w-xs">
               <label class="label">
-                <span class="label-text">Delivery Date :</span>
+                <span class="label-text">
+                  {paymentType === "In Shop"
+                    ? "Purchase Date"
+                    : "Delivery Date"}{" "}
+                  :
+                </span>
               </label>
               <input
                 type="date"
@@ -167,20 +176,25 @@ const CreateNewOrder = () => {
               />
             </div>
 
-            <div className="label">
-              <span className="label-text"> Time Slot : </span>
-            </div>
-            <select
-              name="timeSlot"
-              className="select select-accent w-full max-w-xs"
-            >
-              <option>9-12</option>
-              <option>12-14</option>
-              <option>14-16</option>
-              <option>16-18</option>
-              <option>18-20</option>
-              <option>19-21</option>
-            </select>
+            {paymentType !== "In Shop" && (
+              <>
+                {" "}
+                <div className="label">
+                  <span className="label-text"> Time Slot : </span>
+                </div>
+                <select
+                  name="timeSlot"
+                  className="select select-accent w-full max-w-xs"
+                >
+                  <option>9-12</option>
+                  <option>12-14</option>
+                  <option>14-16</option>
+                  <option>16-18</option>
+                  <option>18-20</option>
+                  <option>19-21</option>
+                </select>
+              </>
+            )}
 
             <div className="label">
               <span className="label-text"> Order Type : </span>
@@ -282,6 +296,41 @@ const CreateNewOrder = () => {
                 />
               </>
             )}
+
+            {/* Order Type - Regular Or Pre-Order */}
+
+            {(paymentStatus === "Paid" || paymentStatus === "Unpaid") &&
+            paymentType !== "Bank Transfer" &&
+            paymentType !== "Cash On Delivery" ? (
+              <>
+                <label class="label">
+                  <span class="label-text">Delivery Status</span>
+                </label>
+
+                <select
+                  name="deliveryStatus"
+                  required
+                  class="select select-error w-full max-w-xs"
+                >
+                  {/* <option disabled selected>
+                              Select Time Slot
+                            </option> */}
+                  {/* <option value="Created">Created</option> */}
+
+                  {paymentStatus === "Paid" && (
+                    <option value="Delivered" selected disabled>
+                      Delivered
+                    </option>
+                  )}
+
+                  {paymentStatus === "Unpaid" && (
+                    <option value="Pending" selected disabled>
+                      Pending
+                    </option>
+                  )}
+                </select>
+              </>
+            ) : null}
 
             <div className="label">
               <span className="label-text"> In Total Amount : </span>

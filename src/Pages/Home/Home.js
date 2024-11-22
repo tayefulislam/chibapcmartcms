@@ -5,7 +5,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div className="mt-2">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-2">
         <div
           onClick={() => navigate("/createNewOrder")}
@@ -31,7 +31,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div
+        {/* <div
           onClick={() => navigate("/login")}
           class="card w-full bg-red-500 shadow-xl text-white"
         >
@@ -41,7 +41,7 @@ const Home = () => {
           <div class="card-body items-center text-center">
             <h2 class="card-title">Donor Login</h2>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* <div className="flex justify-center items-center mt-12">

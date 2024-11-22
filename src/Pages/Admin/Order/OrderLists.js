@@ -131,13 +131,12 @@ const OrderLists = () => {
                 </div>
               ) : null} */}
             </div>
-            {item?.deliveryDate && item?.timeSlot ? (
+            {item?.deliveryDate ? (
               <div>
                 <p className="flex">
-                  Delivery Date :{" "}
-                  <h1> {new Date(item?.deliveryDate).toDateString()}</h1> |
-                  {" Time : "}
-                  {item?.timeSlot}
+                  {!item?.timeSlot ? "Purchase Date" : "Delivery Date"} :{" "}
+                  <h1> {new Date(item?.deliveryDate).toDateString()}</h1>
+                  {item?.timeSlot && ` | Time : ${item?.timeSlot}`}
                 </p>
               </div>
             ) : null}

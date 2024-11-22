@@ -5,9 +5,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 const OrderDetails = () => {
   let updateState = true;
 
-  console.log("1st Update State", updateState);
+  // console.log("1st Update State", updateState);
   let [paymentType, setPaymentType] = React.useState();
   let [paymentStatus, setPaymentStatus] = React.useState();
+  let [deliveryStatus, setDeliveryStatus] = React.useState();
 
   const { orderId } = useParams();
 
@@ -53,21 +54,68 @@ const OrderDetails = () => {
     }
   };
 
+  const handleDeliveryStatus = (status) => {
+    setDeliveryStatus(status);
+  };
+
   if (updateState) {
     updateState = false;
   }
 
-  console.log("1st Update State", updateState);
+  // console.log("1st Update State", updateState);
 
-  console.log();
+  // console.log();
 
   const handleUpdate = (e) => {
     e.preventDefault();
+
+    const customerName = e.target?.customerName?.value;
+    // const itemsDetails = e.target?.itemsDetails?.value;
+    const address = e.target?.address?.value;
+    const postalCode = e.target?.postalCode?.value;
+    const phoneNumber = e.target?.phoneNumber?.value;
+    const deliveryDate = e.target?.deliveryDate?.value;
+    const timeSlot = e.target?.timeSlot?.value;
+    const orderType = e.target?.orderType?.value;
+    const totalAmount = e.target?.totalAmount?.value;
+
+    const trackId = e.target?.trackId?.value;
+    const bankName = e.target?.bankName?.value;
+    const transactionNumber = e.target?.transactionNumber?.value;
+    const deliveryCost = e.target?.deliveryCost?.value;
+
+    let customerAndOrderDetails = {
+      customerDetails: {
+        customerName: customerName,
+        address,
+        postalCode,
+
+        phoneNumber,
+      },
+      orderDetails: {
+        totalAmount,
+        deliveryCost,
+        deliveryDate,
+        timeSlot,
+        orderType,
+        deliveryStatus,
+      },
+      paymentDetails: {
+        paymentType,
+        paymentStatus,
+        paymentAmount: totalAmount,
+        transactionNumber,
+        trackId,
+        bankName,
+      },
+    };
+
+    console.log(customerAndOrderDetails);
   };
 
-  console.log("paymentType", paymentType);
+  // console.log("paymentType", paymentType);
 
-  console.log("paymentStatus", paymentStatus);
+  // console.log("paymentStatus", paymentStatus);
 
   return (
     <>
@@ -160,13 +208,12 @@ const OrderDetails = () => {
                 </div>
               ) : null}
             </div>
-            {data?.deliveryDate && data?.timeSlot ? (
+            {data?.deliveryDate ? (
               <div>
                 <p className="flex">
-                  Delivery Date :{" "}
-                  <h1> {new Date(data?.deliveryDate).toDateString()}</h1> |
-                  {" Time : "}
-                  {data?.timeSlot}
+                  {!data?.timeSlot ? "Purchase Date" : "Delivery Date"} :{" "}
+                  <h1> {new Date(data?.deliveryDate).toDateString()}</h1>
+                  {data?.timeSlot && ` | Time : ${data?.timeSlot}`}
                 </p>
               </div>
             ) : null}
@@ -302,7 +349,12 @@ const OrderDetails = () => {
 
                       <div class="form-control w-full max-w-xs">
                         <label class="label">
-                          <span class="label-text">Delivery Date :</span>
+                          <span class="label-text">
+                            {paymentType === "In Shop"
+                              ? "Purchase Date"
+                              : "Delivery Date"}{" "}
+                            : :
+                          </span>
                         </label>
                         <input
                           type="date"
@@ -329,57 +381,61 @@ const OrderDetails = () => {
 
                       <div class="form-control w-full max-w-xs">
                         {/* Time Slot */}
-                        <label class="label">
-                          <span class="label-text">Time Slot</span>
-                        </label>
+                        {paymentType !== "In Shop" && (
+                          <>
+                            <label class="label">
+                              <span class="label-text">Time Slot</span>
+                            </label>
 
-                        {data?.timeSlot && (
-                          <select
-                            name="group"
-                            required
-                            class="select select-error w-full max-w-xs"
-                          >
-                            {/* <option disabled selected>
-                              Select Time Slot
-                            </option> */}
-                            <option
-                              value="9-12"
-                              selected={data?.timeSlot === "9-12"}
-                            >
-                              9-12
-                            </option>
-                            <option
-                              value="12-14"
-                              selected={data?.timeSlot === "12-14"}
-                            >
-                              12-2
-                            </option>
-                            <option
-                              value="14-16"
-                              selected={data?.timeSlot === "14-16"}
-                            >
-                              14-16
-                            </option>
-                            <option
-                              value="16-18"
-                              selected={data?.timeSlot === "16-18"}
-                            >
-                              16-20
-                            </option>
+                            {data?.timeSlot && (
+                              <select
+                                name="timeSlot"
+                                required
+                                class="select select-error w-full max-w-xs"
+                              >
+                                {/* <option disabled selected>
+                                Select Time Slot
+                              </option> */}
+                                <option
+                                  value="9-12"
+                                  selected={data?.timeSlot === "9-12"}
+                                >
+                                  9-12
+                                </option>
+                                <option
+                                  value="12-14"
+                                  selected={data?.timeSlot === "12-14"}
+                                >
+                                  12-2
+                                </option>
+                                <option
+                                  value="14-16"
+                                  selected={data?.timeSlot === "14-16"}
+                                >
+                                  14-16
+                                </option>
+                                <option
+                                  value="16-18"
+                                  selected={data?.timeSlot === "16-18"}
+                                >
+                                  16-20
+                                </option>
 
-                            <option
-                              value="6-8"
-                              selected={data?.timeSlot === "18-20"}
-                            >
-                              18-20
-                            </option>
-                            <option
-                              value="19-21"
-                              selected={data?.timeSlot === "19-21"}
-                            >
-                              19-21
-                            </option>
-                          </select>
+                                <option
+                                  value="6-8"
+                                  selected={data?.timeSlot === "18-20"}
+                                >
+                                  18-20
+                                </option>
+                                <option
+                                  value="19-21"
+                                  selected={data?.timeSlot === "19-21"}
+                                >
+                                  19-21
+                                </option>
+                              </select>
+                            )}
+                          </>
                         )}
 
                         {/* Order Type - Regular Or Pre-Order */}
@@ -390,7 +446,7 @@ const OrderDetails = () => {
 
                         {data?.orderType && (
                           <select
-                            name="group"
+                            name="orderType"
                             required
                             class="select select-error w-full max-w-xs"
                           >
@@ -516,6 +572,8 @@ const OrderDetails = () => {
                           </div>
                         )}
 
+                        {}
+
                         {paymentType !== "In Shop" && (
                           <>
                             <div className="label">
@@ -541,76 +599,89 @@ const OrderDetails = () => {
                               defaultValue={data?.deliveryCost}
                               className="input input-accent w-full max-w-xs"
                             />{" "}
-                            <div className="label">
-                              <span className="label-text"> Total : </span>
-                            </div>
-                            <input
-                              type="number"
-                              name="deliveryCost"
-                              placeholder="Type Shipping Fee"
-                              defaultValue={data?.totalAmount}
-                              className="input input-accent w-full max-w-xs"
-                            />{" "}
                           </>
                         )}
 
-                        {/* {data?.group && (
-                          <input
-                            type="text"
-                            name="group"
-                            disabled
-                            defaultValue={data?.group}
-                            class="input input-bordered input-error w-full max-w-xs"
-                          />
-                        )}
+                        <>
+                          <label class="label">
+                            <span class="label-text">Delivery Status</span>
+                          </label>
 
-                        <label class="label"></label> */}
-                      </div>
+                          {data?.deliveryStatus && (
+                            <select
+                              name="deliveryStatus"
+                              required
+                              class="select select-error w-full max-w-xs"
+                            >
+                              {/* <option disabled selected>
+                                Select Time Slot
+                              </option> */}
+                              <option
+                                value="Returned"
+                                selected={data?.deliveryStatus === "Returned"}
+                              >
+                                Returned
+                              </option>
+                              <option
+                                value="Delivered"
+                                selected={data?.deliveryStatus === "Delivered"}
+                              >
+                                Delivered
+                              </option>
+                              <option
+                                value="Canceled"
+                                selected={data?.deliveryStatus === "Canceled"}
+                              >
+                                Canceled
+                              </option>
+                              <option
+                                value="Sent"
+                                selected={data?.deliveryStatus === "Sent"}
+                              >
+                                Sent
+                              </option>
 
-                      {/* <div class="form-control w-full max-w-xs">
-                            <label class="label">
-                                <span class="label-text"> Last Blood Donation Date :</span>
+                              <option
+                                value="Pending"
+                                selected={data?.deliveryStatus === "Pending"}
+                              >
+                                Pending
+                              </option>
+                              <option
+                                value="Created"
+                                selected={data?.deliveryStatus === "19-21"}
+                              >
+                                Created
+                              </option>
 
-                            </label>
-                            <input type="date" required placeholder="Blood Donation Date " name='date' class="input input-bordered input-error w-full max-w-xs" />
-                            <label class="label">
+                              <option
+                                value="On Hold"
+                                selected={data?.deliveryStatus === "On Hold"}
+                              >
+                                On Hold
+                              </option>
 
-                            </label>
-                        </div> */}
+                              <option
+                                value="Fraud"
+                                selected={data?.deliveryStatus === "Fraud"}
+                              >
+                                Fraud
+                              </option>
+                            </select>
+                          )}
+                        </>
 
-                      {/* <div class="form-control w-full max-w-xs">
-                        <label class="label">
-                          <span class="label-text">District * :</span>
-                        </label>
-
-                        <select
-                          name="district"
-                          required
-                          class="select select-error w-full max-w-xs"
-                        >
-                          <option value="Dhaka">Dhaka</option>
-                          <option
-                            value="Brahmanbaria"
-                            selected={data?.district === "Brahmanbaria"}
-                          >
-                            Brahmanbaria
-                          </option>
-                        </select>
-                      </div> */}
-                      {/* <div class="form-control w-full max-w-xs">
-                        <label class="label">
-                          <span class="label-text">Area :</span>
-                        </label>
-                        <textarea
-                          type="text"
-                          required
-                          defaultValue={data?.area}
-                          placeholder="Area"
-                          name="area"
-                          class="input input-bordered input-error w-full max-w-xs"
+                        <div className="label">
+                          <span className="label-text"> Total : </span>
+                        </div>
+                        <input
+                          type="number"
+                          name="totalAmount"
+                          placeholder="Type Shipping Fee"
+                          defaultValue={data?.totalAmount}
+                          className="input input-accent w-full max-w-xs"
                         />
-                        <label class="label"></label>
-                      </div> */}
+                      </div>
 
                       <div className="flex justify-around mt-2">
                         <input className="btn" type="submit" value="Submit" />

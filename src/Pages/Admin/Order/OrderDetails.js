@@ -164,7 +164,7 @@ const OrderDetails = () => {
         <div>
           <div className="flex justify-between mt-2  text-2xl">
             <p className="font-semibold">{data?.customerId?.customerName}</p>
-            <p className="font-extrabold">¥ {data?.totalAmount}</p>
+            <p className="font-extrabold">¥{data?.totalAmount}</p>
           </div>
           <div className="flex justify-between">
             <p>Order : {data?.orderId}</p>
@@ -215,12 +215,6 @@ const OrderDetails = () => {
             {data?.deliveryStatus === "Posting/Collection" ? (
               <div className="badge badge-info text-neutral-50">
                 Posting/Collection
-              </div>
-            ) : null}
-
-            {data?.deliveryStatus === "Investigation" ? (
-              <div className="badge badge-error text-neutral-50">
-                Investigation
               </div>
             ) : null}
 

@@ -106,7 +106,7 @@ const CreateNewOrder = () => {
       {" "}
       <h1 className="text-center text-xl font-semibold">Create Order</h1>
       {/* Create Order */}
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center mb-8">
         <form onSubmit={handleRequest}>
           <label className="form-control w-96 max-w-xs">
             <div className="label">

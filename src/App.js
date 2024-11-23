@@ -5,6 +5,7 @@ import OrderLists from "./Pages/Admin/Order/OrderLists";
 import UpdateOrderDetails from "./Pages/Admin/Order/UpdateOrderDetails";
 import OrderDetails from "./Pages/Admin/Order/OrderDetails";
 import Home from "./Pages/Home/Home";
+import Header from "./Shared/MenuBar/MenuBar";
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
 
         <Route path="/orderDetails/:orderId" element={<OrderDetails />}></Route>
       </Routes>
+
+      <div className="py-[30px]"></div>
+
+      <Header></Header>
     </div>
   );
 }

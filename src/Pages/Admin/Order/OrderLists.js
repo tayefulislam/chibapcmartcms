@@ -55,9 +55,26 @@ const OrderLists = () => {
 
   return (
     <div className="mx-2">
-      <h1 className="text-xl text-center font-semibold mt-1 underline">
-        OrderLists
-      </h1>
+      <h1 className="text-2xl text-center font-semibold my-2 ">Orders</h1>
+      <div className="flex justify-center">
+        <div className="join">
+          <div>
+            <div>
+              <input
+                className="input input-bordered join-item"
+                placeholder="Search"
+              />
+            </div>
+          </div>
+          <select className="select select-bordered join-item">
+            <option>All</option>
+            <option>Delivered</option>
+            <option>Pre-Order</option>
+            <option>Returned</option>
+            <option>Cancelled</option>
+          </select>
+        </div>
+      </div>
       {items.map((item) => (
         <div
           key={item?._id}
@@ -65,9 +82,9 @@ const OrderLists = () => {
           className=" bg-base-100 w-full "
         >
           <div className="border-t-4 border-blue-500 my-4"></div>
-          <div className="flex justify-between mt-2  text-2xl">
-            <p className="font-semibold">{item?.customerId?.customerName}</p>
-            <p className="font-extrabold">¥ {item?.totalAmount}</p>
+          <div className="flex justify-between mt-2  text-xl">
+            <p className="font-medium">{item?.customerId?.customerName}</p>
+            <p className="font-semibold">{item?.totalAmount}¥ </p>
           </div>
           <div className="flex justify-between">
             <p>Order : {item?.orderId}</p>
@@ -232,6 +249,7 @@ const OrderLists = () => {
           Next{" "}
         </button>{" "}
       </div>
+      <div className="my-4"></div>
     </div>
   );
 };

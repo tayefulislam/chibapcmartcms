@@ -24,7 +24,16 @@ const OrderDetails = () => {
   });
 
   // handle loading
-  if (isPending) return <h1>Loading</h1>;
+  if (isPending)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="flex  w-52 flex-col gap-4">
+          <div className="skeleton h-4 w-full"></div>
+          <div className="skeleton h-4 w-full"></div>
+          <div className="skeleton h-4 w-full"></div>
+        </div>
+      </div>
+    );
 
   // handle error
   if (error) return <h1>{error.message}</h1>;
@@ -65,13 +74,13 @@ const OrderDetails = () => {
 
   // console.log("1st Update State", updateState);
 
-  // console.log();
+  // console.log(data);
 
   const handleUpdate = (e) => {
     e.preventDefault();
 
     const customerName = e.target?.customerName?.value;
-    // const itemsDetails = e.target?.itemsDetails?.value;
+    const itemsDetails = e.target?.itemsDetails?.value;
     const address = e.target?.address?.value;
     const postalCode = e.target?.postalCode?.value;
     const phoneNumber = e.target?.phoneNumber?.value;
@@ -84,6 +93,7 @@ const OrderDetails = () => {
     const bankName = e.target?.bankName?.value;
     const transactionNumber = e.target?.transactionNumber?.value;
     const deliveryCost = e.target?.deliveryCost?.value;
+    let deliveryStatus = e.target?.deliveryStatus?.value;
 
     let customerAndOrderDetails = {
       customerId: data?.customerId?._id,
@@ -97,6 +107,11 @@ const OrderDetails = () => {
         phoneNumber,
       },
       orderDetails: {
+        itemsDetails: [
+          {
+            itemName: itemsDetails,
+          },
+        ],
         totalAmount,
         deliveryCost,
         deliveryDate,
@@ -123,6 +138,8 @@ const OrderDetails = () => {
         console.log(response);
 
         if (response?.status === 200) {
+          const closeButton = document.getElementById("closeButton");
+          closeButton.click();
           refetch();
         }
 
@@ -181,11 +198,8 @@ const OrderDetails = () => {
             {data?.deliveryStatus === "Absence" ? (
               <div className="badge badge-error text-neutral-50">Absence</div>
             ) : null}
-
-            {data?.deliveryStatus === "Reached Post Office" ? (
-              <div className="badge badge-info text-neutral-50">
-                Reached Post Office
-              </div>
+            {data?.deliveryStatus === "Cancelled" ? (
+              <div className="badge badge-error text-neutral-50">Cancelled</div>
             ) : null}
 
             {data?.deliveryStatus === "Reached Post Office" ? (
@@ -208,6 +222,28 @@ const OrderDetails = () => {
               <div className="badge badge-error text-neutral-50">
                 Investigation
               </div>
+            ) : null}
+
+            {data?.deliveryStatus === "Investigation" ? (
+              <div className="badge badge-error text-neutral-50">
+                Investigation
+              </div>
+            ) : null}
+
+            {data?.deliveryStatus === "Created" ? (
+              <div className="badge badge-info text-neutral-50">Created</div>
+            ) : null}
+
+            {data?.deliveryStatus === "Fraud" ? (
+              <div className="badge badge-info text-neutral-50">Fraud</div>
+            ) : null}
+
+            {data?.deliveryStatus === "On Hold" ? (
+              <div className="badge badge-info text-neutral-50">On Hold</div>
+            ) : null}
+
+            {data?.deliveryStatus === "Sended" ? (
+              <div className="badge badge-info text-neutral-50">Sended</div>
             ) : null}
           </div>
 
@@ -338,15 +374,16 @@ const OrderDetails = () => {
                         <label class="label"></label>
                       </div>
 
-                      {/* <div className="label">
-              <span className="label-text">Items Details : </span>
-            </div>
-            <textarea
-              type="text"
-              name="itemsDetails"
-              placeholder="Type Items Details "
-              className="textarea textarea-accent w-full max-w-xs"
-            /> */}
+                      <div className="label">
+                        <span className="label-text">Items Details : </span>
+                      </div>
+                      <textarea
+                        type="text"
+                        name="itemsDetails"
+                        defaultValue={data?.itemsDetails[0]?.itemName}
+                        placeholder="Type Items Details "
+                        className="textarea textarea-accent w-full max-w-xs"
+                      />
 
                       <div className="label">
                         <span className="label-text"> Address : </span>
@@ -394,7 +431,6 @@ const OrderDetails = () => {
                         </label>
                         <input
                           type={"text"}
-                          required
                           defaultValue={data?.customerId?.phoneNumber}
                           name="phoneNumber"
                           class="input input-bordered input-error w-full max-w-xs"
@@ -404,60 +440,59 @@ const OrderDetails = () => {
 
                       <div class="form-control w-full max-w-xs">
                         {/* Time Slot */}
+
                         {paymentType !== "In Shop" && (
                           <>
                             <label class="label">
                               <span class="label-text">Time Slot</span>
                             </label>
 
-                            {data?.timeSlot && (
-                              <select
-                                name="timeSlot"
-                                required
-                                class="select select-error w-full max-w-xs"
-                              >
-                                {/* <option disabled selected>
+                            <select
+                              name="timeSlot"
+                              required
+                              class="select select-error w-full max-w-xs"
+                            >
+                              {/* <option disabled selected>
                                 Select Time Slot
                               </option> */}
-                                <option
-                                  value="9-12"
-                                  selected={data?.timeSlot === "9-12"}
-                                >
-                                  9-12
-                                </option>
-                                <option
-                                  value="12-14"
-                                  selected={data?.timeSlot === "12-14"}
-                                >
-                                  12-2
-                                </option>
-                                <option
-                                  value="14-16"
-                                  selected={data?.timeSlot === "14-16"}
-                                >
-                                  14-16
-                                </option>
-                                <option
-                                  value="16-18"
-                                  selected={data?.timeSlot === "16-18"}
-                                >
-                                  16-20
-                                </option>
+                              <option
+                                value="9-12"
+                                selected={data?.timeSlot === "9-12"}
+                              >
+                                9-12
+                              </option>
+                              <option
+                                value="12-14"
+                                selected={data?.timeSlot === "12-14"}
+                              >
+                                12-2
+                              </option>
+                              <option
+                                value="14-16"
+                                selected={data?.timeSlot === "14-16"}
+                              >
+                                14-16
+                              </option>
+                              <option
+                                value="16-18"
+                                selected={data?.timeSlot === "16-18"}
+                              >
+                                16-20
+                              </option>
 
-                                <option
-                                  value="6-8"
-                                  selected={data?.timeSlot === "18-20"}
-                                >
-                                  18-20
-                                </option>
-                                <option
-                                  value="19-21"
-                                  selected={data?.timeSlot === "19-21"}
-                                >
-                                  19-21
-                                </option>
-                              </select>
-                            )}
+                              <option
+                                value="6-8"
+                                selected={data?.timeSlot === "18-20"}
+                              >
+                                18-20
+                              </option>
+                              <option
+                                value="19-21"
+                                selected={data?.timeSlot === "19-21"}
+                              >
+                                19-21
+                              </option>
+                            </select>
                           </>
                         )}
 
@@ -634,17 +669,69 @@ const OrderDetails = () => {
                             <select
                               name="deliveryStatus"
                               required
+                              defaultValue={data?.deliveryStatus}
                               class="select select-error w-full max-w-xs"
                             >
                               {/* <option disabled selected>
                                 Select Time Slot
                               </option> */}
+
+                              <option
+                                value="Redelivery Done"
+                                selected={
+                                  data?.deliveryStatus === "Redelivery Done"
+                                }
+                              >
+                                Redelivery Done
+                              </option>
+                              <option
+                                value="Reached Post Office"
+                                selected={
+                                  data?.deliveryStatus === "Reached Post Office"
+                                }
+                              >
+                                Reached Post Office
+                              </option>
+
+                              <option
+                                value="Out for delivery"
+                                selected={
+                                  data?.deliveryStatus === "Out for delivery"
+                                }
+                              >
+                                Out for delivery
+                              </option>
+
+                              <option
+                                value="En route"
+                                selected={data?.deliveryStatus === "En route"}
+                              >
+                                En route
+                              </option>
+
+                              <option
+                                value="Posting/Collection"
+                                selected={
+                                  data?.deliveryStatus === "Posting/Collection"
+                                }
+                              >
+                                Posting/Collection
+                              </option>
+                              <option
+                                value="Investigation"
+                                selected={
+                                  data?.deliveryStatus === "Investigation"
+                                }
+                              >
+                                Investigation
+                              </option>
                               <option
                                 value="Returned"
                                 selected={data?.deliveryStatus === "Returned"}
                               >
                                 Returned
                               </option>
+
                               <option
                                 value="Delivered"
                                 selected={data?.deliveryStatus === "Delivered"}
@@ -652,16 +739,22 @@ const OrderDetails = () => {
                                 Delivered
                               </option>
                               <option
-                                value="Canceled"
-                                selected={data?.deliveryStatus === "Canceled"}
+                                value="Cancelled"
+                                selected={data?.deliveryStatus === "Cancelled"}
                               >
-                                Canceled
+                                Cancelled
                               </option>
                               <option
-                                value="Sent"
-                                selected={data?.deliveryStatus === "Sent"}
+                                value="Sended"
+                                selected={data?.deliveryStatus === "Sended"}
                               >
-                                Sent
+                                Sended
+                              </option>
+                              <option
+                                value="Absence"
+                                selected={data?.deliveryStatus === "Absence"}
+                              >
+                                Absence
                               </option>
 
                               <option
@@ -669,12 +762,6 @@ const OrderDetails = () => {
                                 selected={data?.deliveryStatus === "Pending"}
                               >
                                 Pending
-                              </option>
-                              <option
-                                value="Created"
-                                selected={data?.deliveryStatus === "Created"}
-                              >
-                                Created
                               </option>
 
                               <option
@@ -689,6 +776,13 @@ const OrderDetails = () => {
                                 selected={data?.deliveryStatus === "Fraud"}
                               >
                                 Fraud
+                              </option>
+
+                              <option
+                                value="Created"
+                                selected={data?.deliveryStatus === "Created"}
+                              >
+                                Created
                               </option>
                             </select>
                           )}
@@ -708,7 +802,11 @@ const OrderDetails = () => {
 
                       <div className="flex justify-around mt-2">
                         <input className="btn" type="submit" value="Submit" />
-                        <label htmlFor="my_modal_6" className="btn">
+                        <label
+                          id="closeButton"
+                          htmlFor="my_modal_6"
+                          className="btn"
+                        >
                           Close!
                         </label>
                       </div>

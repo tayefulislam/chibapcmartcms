@@ -336,7 +336,7 @@ const CreateNewOrder = () => {
               <span className="label-text"> In Total Amount : </span>
             </div>
             <input
-              type="number"
+              type="text"
               name="totalAmount"
               placeholder="Type Total Amount"
               className="input input-accent w-full max-w-xs"

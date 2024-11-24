@@ -212,9 +212,9 @@ const OrderDetails = () => {
               <div className="badge badge-info text-neutral-50">En route</div>
             ) : null}
 
-            {data?.deliveryStatus === "Posting/Collection" ? (
+            {data?.deliveryStatus === "Post Office Drop" ? (
               <div className="badge badge-info text-neutral-50">
-                Posting/Collection
+                Post Office Drop
               </div>
             ) : null}
 

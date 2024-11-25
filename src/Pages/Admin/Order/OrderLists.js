@@ -1,28 +1,95 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-let url = `${process.env.REACT_APP_apiLink}/api/v1/orders/getAllOrderDetails`;
-// console.log(url);
-
 const OrderLists = () => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  let [page, setPage] = useState(1);
+  let [limit, setLimit] = useState(10);
+  let [searchKeyWord, setSearchKeyWord] = useState("");
+  let [orderStatus, setOrderStatus] = useState("");
+  let [orderType, setOrderType] = useState("");
+
+  console.log(orderStatus);
+
   const navigate = useNavigate();
+
+  console.log(
+    `${process.env.REACT_APP_apiLink}/api/v1/orders/getAllOrderDetails?s=${searchKeyWord}&deliveryStatus=${orderStatus}&orderType=${orderType}&page=${page}&limit=${limit}`
+  );
 
   const fetchOrders = async ({ page, limit }) => {
     const res = await fetch(
-      `${process.env.REACT_APP_apiLink}/api/v1/orders/getAllOrderDetails?page=${page}&limit=${limit}`
+      `${process.env.REACT_APP_apiLink}/api/v1/orders/getAllOrderDetails?s=${searchKeyWord}&deliveryStatus=${orderStatus}&orderType=${orderType}&page=${page}&limit=${limit}`
     );
     return res.json();
   };
 
-  let { isPending, error, data } = useQuery({
+  let { isPending, error, data, refetch } = useQuery({
     queryKey: ["getAllOrderDetails", { page, limit }],
     queryFn: () => fetchOrders({ page, limit }),
     keepPreviousData: true,
   });
+
+  const handlePageChange = (event) => {
+    const newPage = parseInt(event?.target?.value, 10);
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (event) => {
+    setLimit(parseInt(event?.target?.value, 10));
+    setPage(1);
+  };
+
+  console.log(orderStatus, orderType);
+
+  // All Available Items
+
+  const handleStatus = (status) => {
+    switch (status) {
+      case "All":
+        setOrderStatus("");
+        setOrderType("");
+
+        break;
+      case "Delivered":
+        setOrderStatus("Delivered");
+        setOrderType("");
+
+        break;
+      case "Returned":
+        setOrderStatus("Returned");
+        setOrderType("");
+
+        break;
+      case "Cancelled":
+        setOrderStatus("Cancelled");
+        setOrderType("");
+
+        break;
+      case "Regular":
+        setOrderType("Regular");
+        setOrderStatus("");
+        refetch();
+        break;
+      case "Pre-Order":
+        setOrderType("Pre-Order");
+        setOrderStatus("");
+
+        break;
+      default:
+        setOrderStatus("");
+        setOrderType("");
+    }
+  };
+
+  const handleSearch = (value) => {
+    setSearchKeyWord(value);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [page, limit, searchKeyWord, orderStatus, orderType]);
 
   // handle loading
   if (isPending)
@@ -39,17 +106,7 @@ const OrderLists = () => {
   // handle error
   if (error) return <h1>{error.message}</h1>;
 
-  const handlePageChange = (event) => {
-    const newPage = parseInt(event?.target?.value, 10);
-    setPage(newPage);
-  };
-
-  const handleLimitChange = (event) => {
-    setLimit(parseInt(event?.target?.value, 10));
-    setPage(1);
-  };
-
-  // All Available Items
+  console.log(searchKeyWord);
 
   let items = data?.result;
 
@@ -61,17 +118,22 @@ const OrderLists = () => {
           <div>
             <div>
               <input
+                onChange={(e) => handleSearch(e?.target?.value)}
                 className="input input-bordered join-item"
                 placeholder="Search"
               />
             </div>
           </div>
-          <select className="select select-bordered join-item">
-            <option>All</option>
-            <option>Delivered</option>
-            <option>Pre-Order</option>
-            <option>Returned</option>
-            <option>Cancelled</option>
+          <select
+            onChange={(e) => handleStatus(e?.target?.value)}
+            className="select select-bordered join-item"
+          >
+            <option onClick={() => handleStatus("All")}>All</option>{" "}
+            <option onClick={() => handleStatus("Delivered")}>Delivered</option>{" "}
+            <option onClick={() => handleStatus("Returned")}>Returned</option>{" "}
+            <option onClick={() => handleStatus("Cancelled")}>Cancelled</option>{" "}
+            <option onClick={() => handleStatus("Regular")}>Regular</option>{" "}
+            <option onClick={() => handleStatus("Pre-Order")}>Pre-Order</option>
           </select>
         </div>
       </div>

@@ -94,6 +94,13 @@ const OrderDetails = () => {
     const transactionNumber = e.target?.transactionNumber?.value;
     const deliveryCost = e.target?.deliveryCost?.value;
     let deliveryStatus = e.target?.deliveryStatus?.value;
+    const socialMedia = e.target?.socialMedia?.value || "";
+
+    let searchKeyWord = `${customerName || ""}${address || ""}${
+      postalCode || ""
+    }${phoneNumber || ""} ${trackId || ""}${bankName || ""}${
+      transactionNumber || ""
+    }${bankName || ""}${transactionNumber || ""}`;
 
     let customerAndOrderDetails = {
       customerId: data?.customerId?._id,
@@ -105,6 +112,7 @@ const OrderDetails = () => {
         postalCode,
 
         phoneNumber,
+        socialMedia,
       },
       orderDetails: {
         itemsDetails: [
@@ -118,6 +126,7 @@ const OrderDetails = () => {
         timeSlot,
         orderType,
         deliveryStatus,
+        searchKeyWord: searchKeyWord.replace(/\s+/g, " ").trim(),
       },
       paymentDetails: {
         paymentType,
@@ -636,6 +645,17 @@ const OrderDetails = () => {
                               name="trackId"
                               placeholder="Type Track Id Code"
                               defaultValue={data?.paymentObjId?.trackId}
+                              className="input input-accent w-full max-w-xs"
+                            />
+                            <div className="label">
+                              <span className="label-text">
+                                Social Media :{" "}
+                              </span>
+                            </div>
+                            <input
+                              type="text"
+                              name="socialMedia"
+                              placeholder="Type SocialMedia Id if have"
                               className="input input-accent w-full max-w-xs"
                             />
                             <div className="label">

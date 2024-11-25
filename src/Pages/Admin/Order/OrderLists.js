@@ -40,12 +40,12 @@ const OrderLists = () => {
   if (error) return <h1>{error.message}</h1>;
 
   const handlePageChange = (event) => {
-    const newPage = parseInt(event.target.value, 10);
+    const newPage = parseInt(event?.target?.value, 10);
     setPage(newPage);
   };
 
   const handleLimitChange = (event) => {
-    setLimit(parseInt(event.target.value, 10));
+    setLimit(parseInt(event?.target?.value, 10));
     setPage(1);
   };
 
@@ -75,7 +75,7 @@ const OrderLists = () => {
           </select>
         </div>
       </div>
-      {items.map((item) => (
+      {items?.map((item) => (
         <div
           key={item?._id}
           onClick={() => navigate(`/orderDetails/${item?._id}`)}

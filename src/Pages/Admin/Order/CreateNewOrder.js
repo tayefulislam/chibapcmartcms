@@ -31,28 +31,34 @@ const CreateNewOrder = () => {
 
   const handleRequest = (e) => {
     e.preventDefault();
-    const customerName = e.target?.customerName?.value;
+    const customerName = e.target?.customerName?.value || "";
     const itemsDetails = e.target?.itemsDetails?.value;
-    const address = e.target?.address?.value;
-    const postalCode = e.target?.postalCode?.value;
-    const phoneNumber = e.target?.phoneNumber?.value;
+    const address = e.target?.address?.value || "";
+    const postalCode = e.target?.postalCode?.value || "";
+    const phoneNumber = e.target?.phoneNumber?.value || "";
     const deliveryDate = e.target?.deliveryDate?.value;
     const timeSlot = e.target?.timeSlot?.value;
     const orderType = e.target?.orderType?.value;
     const totalAmount = e.target?.totalAmount?.value;
     const paymentType = e.target?.paymentType?.value;
-    const trackId = e.target?.trackId?.value;
-    const bankName = e.target?.bankName?.value;
-    const transactionNumber = e.target?.transactionNumber?.value;
+    const trackId = e.target?.trackId?.value || "";
+    const bankName = e.target?.bankName?.value || "";
+    const transactionNumber = e.target?.transactionNumber?.value || "";
     const deliveryCost = e.target?.deliveryCost?.value;
     const deliveryStatus = e.target?.deliveryStatus?.value;
+    const socialMedia = e.target?.socialMedia?.value || "";
+    let searchKeyWord =
+      `${customerName}  ${address} ${postalCode} ${phoneNumber}  ${trackId} ${bankName} ${transactionNumber} ${bankName} ${transactionNumber}`
+        .replace(/\s+/g, " ")
+        .trim();
 
     let customerAndOrderDetails = {
       customerDetails: {
         customerName,
-        address,
+        customerName,
         postalCode,
         phoneNumber,
+        socialMedia,
       },
       orderDetails: {
         itemsDetails: [
@@ -66,6 +72,7 @@ const CreateNewOrder = () => {
         timeSlot,
         orderType,
         deliveryStatus,
+        searchKeyWord,
       },
       paymentDetails: {
         paymentType,
@@ -282,6 +289,15 @@ const CreateNewOrder = () => {
                   type="number"
                   name="trackId"
                   placeholder="Type Track Id Code"
+                  className="input input-accent w-full max-w-xs"
+                />
+                <div className="label">
+                  <span className="label-text">Social Media : </span>
+                </div>
+                <input
+                  type="text"
+                  name="socialMedia"
+                  placeholder="Type SocialMedia Id if have"
                   className="input input-accent w-full max-w-xs"
                 />
 

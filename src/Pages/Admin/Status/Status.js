@@ -34,7 +34,7 @@ const Status = () => {
               <span className="loading loading-spinner text-error"></span>
             ) : (
               <div className="stat-value ">
-                {dataObject?.Delivered?.totalAmount} ¥
+                {dataObject?.Delivered?.totalAmount || 0} ¥
               </div>
             )}
 
@@ -65,7 +65,9 @@ const Status = () => {
           </figure> */}
           <div class="card-body items-center text-center">
             <div className="stat-title ">Delivered</div>
-            <h2 class="card-title">{dataObject?.Delivered?.documentCount}</h2>
+            <h2 class="card-title">
+              {dataObject?.Delivered?.documentCount || 0}
+            </h2>
           </div>
         </div>
 
@@ -81,7 +83,7 @@ const Status = () => {
             {isPending ? (
               <span className="loading loading-spinner text-error"></span>
             ) : (
-              <h2 class="card-title">{data?.preOrder}</h2>
+              <h2 class="card-title">{data?.preOrder || 0}</h2>
             )}
           </div>
         </div>
@@ -99,7 +101,9 @@ const Status = () => {
             {isPending ? (
               <span className="loading loading-spinner text-error"></span>
             ) : (
-              <h2 class="card-title">{dataObject?.Returned?.documentCount}</h2>
+              <h2 class="card-title">
+                {dataObject?.Returned?.documentCount || 0}
+              </h2>
             )}
           </div>
         </div>
@@ -123,12 +127,16 @@ const Status = () => {
             Full Status
           </summary>
           <div className="collapse-content">
-            {data?.statusOrder?.map((status, key) => (
-              <div key={key} className="flex justify-between">
-                <p>{status?.deliveryStatus}</p>
-                <p>{status?.documentCount}</p>
-              </div>
-            ))}
+            {data?.statusOrder ? (
+              data?.statusOrder?.map((status, key) => (
+                <div key={key} className="flex justify-between">
+                  <p>{status?.deliveryStatus}</p>
+                  <p>{status?.documentCount}</p>
+                </div>
+              ))
+            ) : (
+              <p>No Data</p>
+            )}
           </div>
         </details>
       </div>

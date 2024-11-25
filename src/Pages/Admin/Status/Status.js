@@ -96,13 +96,13 @@ const Status = () => {
             <i class="fa-solid fa-users-between-lines"></i>
           </figure> */}
           <div class="card-body items-center text-center">
-            <div className="stat-title ">Return</div>
+            <div className="stat-title">Absence</div>
 
             {isPending ? (
               <span className="loading loading-spinner text-error"></span>
             ) : (
               <h2 class="card-title">
-                {dataObject?.Returned?.documentCount || 0}
+                {dataObject?.Absence?.documentCount || 0}
               </h2>
             )}
           </div>

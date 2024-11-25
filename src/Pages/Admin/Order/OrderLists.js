@@ -52,8 +52,21 @@ const OrderLists = () => {
         setOrderType("");
 
         break;
+
       case "Delivered":
         setOrderStatus("Delivered");
+        setOrderType("");
+
+        break;
+
+      case "Absence":
+        setOrderStatus("Absence");
+        setOrderType("");
+
+        break;
+
+      case "Investigation":
+        setOrderStatus("Investigation");
         setOrderType("");
 
         break;
@@ -125,8 +138,12 @@ const OrderLists = () => {
           >
             <option onClick={() => handleStatus("All")}>All</option>{" "}
             <option onClick={() => handleStatus("Delivered")}>Delivered</option>{" "}
+            <option onClick={() => handleStatus("Absence")}>Absence</option>{" "}
             <option onClick={() => handleStatus("Returned")}>Returned</option>{" "}
             <option onClick={() => handleStatus("Cancelled")}>Cancelled</option>{" "}
+            <option onClick={() => handleStatus("Investigation")}>
+              Investigation
+            </option>{" "}
             <option onClick={() => handleStatus("Regular")}>Regular</option>{" "}
             <option onClick={() => handleStatus("Pre-Order")}>Pre-Order</option>
           </select>
@@ -290,7 +307,7 @@ const OrderLists = () => {
           </div> */}
         </div>
       ))}
-      {items.length === 0 ? (
+      {items?.length === 0 ? (
         <div>
           {" "}
           <div className="border-t-4 border-blue-500 my-4"></div>
@@ -313,7 +330,7 @@ const OrderLists = () => {
           </button>{" "}
           <input
             type="number"
-            value={limit}
+            value={items?.length}
             onChange={handleLimitChange}
             className="w-16 text-center"
           />{" "}

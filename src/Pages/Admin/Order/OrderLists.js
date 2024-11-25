@@ -91,17 +91,12 @@ const OrderLists = () => {
     refetch();
   }, [page, limit, searchKeyWord, orderStatus, orderType]);
 
-  // handle loading
-  if (isPending)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="flex  w-52 flex-col gap-4">
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-        </div>
-      </div>
-    );
+  // // handle loading
+  // if (isPending)
+  //   return (
+  //     console.log("Loading..."),
+  //     (<h1 className="text-2xl text-center font-semibold my-2 ">Loading...</h1>)
+  //   );
 
   // handle error
   if (error) return <h1>{error.message}</h1>;
@@ -137,6 +132,15 @@ const OrderLists = () => {
           </select>
         </div>
       </div>
+      {isPending && (
+        <div className="flex justify-center items-center h-screen">
+          <div className="flex  w-52 flex-col gap-4">
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
+          </div>
+        </div>
+      )}
       {items?.map((item) => (
         <div
           key={item?._id}
@@ -286,9 +290,45 @@ const OrderLists = () => {
           </div> */}
         </div>
       ))}
+      {items.length === 0 ? (
+        <div>
+          {" "}
+          <div className="border-t-4 border-blue-500 my-4"></div>
+          <div className="text-center">No Order Found</div>
+        </div>
+      ) : null}
       <div className="border-t-4 border-rose-600 my-4"></div>
-      {/* Pagination Controls */}{" "}
-      <div className="flex justify-between mt-4">
+      {/* Pagination Controls */} <div className="mb-[70px]"></div>
+      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg">
+        {" "}
+        {/* Fixed position at the bottom */}{" "}
+        <div className="flex justify-between mt-4 mb-[80px] mx-4">
+          {" "}
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+          >
+            {" "}
+            Previous{" "}
+          </button>{" "}
+          <input
+            type="number"
+            value={limit}
+            onChange={handleLimitChange}
+            className="w-16 text-center"
+          />{" "}
+          <button
+            onClick={() =>
+              setPage((prev) => Math.min(prev + 1, data.totalPages))
+            }
+            disabled={page === data?.totalPages}
+          >
+            {" "}
+            Next{" "}
+          </button>{" "}
+        </div>{" "}
+      </div>
+      {/* <div className="flex justify-between mt-4">
         {" "}
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -310,7 +350,7 @@ const OrderLists = () => {
           {" "}
           Next{" "}
         </button>{" "}
-      </div>
+      </div> */}
       <div className="my-4"></div>
     </div>
   );

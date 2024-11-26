@@ -68,7 +68,7 @@ const CreateNewOrder = () => {
         ],
         totalAmount,
         deliveryCost,
-        deliveryDate,
+        deliveryDate: new Date(deliveryDate),
         timeSlot,
         orderType,
         deliveryStatus,

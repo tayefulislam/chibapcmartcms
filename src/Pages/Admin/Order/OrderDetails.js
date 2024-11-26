@@ -122,7 +122,7 @@ const OrderDetails = () => {
         ],
         totalAmount,
         deliveryCost,
-        deliveryDate,
+        deliveryDate: new Date(deliveryDate),
         timeSlot,
         orderType,
         deliveryStatus,
@@ -274,9 +274,23 @@ const OrderDetails = () => {
             {data?.deliveryDate ? (
               <div>
                 <p className="flex">
-                  {!data?.timeSlot ? "Purchase Date" : "Delivery Date"} :{" "}
-                  <h1> {new Date(data?.deliveryDate).toDateString()}</h1>
-                  {data?.timeSlot && ` | Time : ${data?.timeSlot}`}
+                  {!data?.timeSlot
+                    ? "Purchase Date"
+                    : data?.deliveryStatus === "Delivered"
+                    ? "Received Date"
+                    : "Delivery Date"}{" "}
+                  : <h1> {new Date(data?.deliveryDate).toDateString()}</h1>
+                  {data?.timeSlot &&
+                    ` | Time : ${
+                      data?.deliveryStatus === "Delivered"
+                        ? new Date(data?.deliveryDate)
+                            .toTimeString()
+                            .slice(0, 5)
+                        : data?.timeSlot
+                    }`}
+                  {/* {
+                    data?.deliveryStatus === "Delivered" ? new Date(data?.deliveryDate).toDateString() : data?.timeSlot
+                  } */}
                 </p>
               </div>
             ) : null}
@@ -480,11 +494,11 @@ const OrderDetails = () => {
                                 value="16-18"
                                 selected={data?.timeSlot === "16-18"}
                               >
-                                16-20
+                                16-18
                               </option>
 
                               <option
-                                value="6-8"
+                                value="18-20"
                                 selected={data?.timeSlot === "18-20"}
                               >
                                 18-20

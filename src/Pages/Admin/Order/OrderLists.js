@@ -15,7 +15,11 @@ const OrderLists = () => {
   const navigate = useNavigate();
 
   console.log(
-    `${process.env.REACT_APP_apiLink}/api/v1/orders/getAllOrderDetails?s=${searchKeyWord}&deliveryStatus=${orderStatus}&orderType=${orderType}&page=${page}&limit=${limit}`
+    `${
+      process.env.REACT_APP_apiLink
+    }/api/v1/orders/getAllOrderDetails?s=${encodeURIComponent(
+      searchKeyWord
+    )}&deliveryStatus=${orderStatus}&orderType=${orderType}&page=${page}&limit=${limit}`
   );
 
   const fetchOrders = async ({ page, limit }) => {
@@ -255,6 +259,13 @@ const OrderLists = () => {
                   <p>〒 {item?.customerId?.postalCode}</p>
                 </div>
               ) : null}
+              {item?.itemsDetails[0].itemName ? (
+                <div>
+                  <p className="text-red-600">
+                    {item?.itemsDetails[0].itemName}
+                  </p>
+                </div>
+              ) : null}
             </div>
 
             <div>
@@ -271,10 +282,30 @@ const OrderLists = () => {
             </div>
             {item?.deliveryDate ? (
               <div>
-                <p className="flex">
+                {/* <p className="flex">
                   {!item?.timeSlot ? "Purchase Date" : "Delivery Date"} :{" "}
                   <h1> {new Date(item?.deliveryDate).toDateString()}</h1>
                   {item?.timeSlot && ` | Time : ${item?.timeSlot}`}
+                </p> */}
+
+                <p className="flex">
+                  {!item?.timeSlot
+                    ? "Purchase Date"
+                    : item?.deliveryStatus === "Delivered"
+                    ? "Received Date"
+                    : "Delivery Date"}{" "}
+                  : <h1> {new Date(item?.deliveryDate).toDateString()}</h1>
+                  {item?.timeSlot &&
+                    ` | Time : ${
+                      item?.deliveryStatus === "Delivered"
+                        ? new Date(item?.deliveryDate)
+                            .toTimeString()
+                            .slice(0, 5)
+                        : item?.timeSlot
+                    }`}
+                  {/* {
+                    data?.deliveryStatus === "Delivered" ? new Date(data?.deliveryDate).toDateString() : data?.timeSlot
+                  } */}
                 </p>
               </div>
             ) : null}
@@ -330,7 +361,7 @@ const OrderLists = () => {
           </button>{" "}
           <input
             type="number"
-            value={items?.length}
+            value={limit}
             onChange={handleLimitChange}
             className="w-16 text-center"
           />{" "}

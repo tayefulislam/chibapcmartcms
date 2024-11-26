@@ -65,9 +65,13 @@ const Status = () => {
           </figure> */}
           <div class="card-body items-center text-center">
             <div className="stat-title ">Delivered</div>
-            <h2 class="card-title">
-              {dataObject?.Delivered?.documentCount || 0}
-            </h2>
+            {isPending ? (
+              <span className="loading loading-spinner text-error"></span>
+            ) : (
+              <h2 class="card-title">
+                {dataObject?.Delivered?.documentCount || 0}
+              </h2>
+            )}
           </div>
         </div>
 

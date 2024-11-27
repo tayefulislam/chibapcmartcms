@@ -10,6 +10,7 @@ const OrderDetails = () => {
   let [paymentType, setPaymentType] = React.useState();
   let [paymentStatus, setPaymentStatus] = React.useState();
   let [deliveryStatus, setDeliveryStatus] = React.useState();
+  // let [deliveryDatePrevious, setDeliveryDatePrevious] = React.useState();
 
   const { orderId } = useParams();
 
@@ -22,6 +23,8 @@ const OrderDetails = () => {
     queryKey: [`getSingleOrderWithCustomerPaymentDetails/${orderId}`],
     queryFn: () => fetch(url).then((res) => res.json()),
   });
+
+  console.log(data);
 
   // handle loading
   if (isPending)
@@ -73,8 +76,6 @@ const OrderDetails = () => {
   }
 
   // console.log("1st Update State", updateState);
-
-  // console.log(data);
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -437,7 +438,11 @@ const OrderDetails = () => {
                           type="date"
                           placeholder="Delivery Date "
                           name="deliveryDate"
-                          defaultValue={data?.deliveryDate}
+                          defaultValue={
+                            new Date(data?.deliveryDate)
+                              .toISOString()
+                              .split("T")[0]
+                          }
                           class="input input-bordered input-success w-full max-w-xs"
                         />
                       </div>

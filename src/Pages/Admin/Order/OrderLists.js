@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const OrderLists = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const typeOfOrder = searchParams.get("orderType");
+  const statusOfOrder = searchParams.get("orderStatus");
+
+  console.log(typeOfOrder);
+
   let [page, setPage] = useState(1);
   let [limit, setLimit] = useState(10);
   let [searchKeyWord, setSearchKeyWord] = useState("");
-  let [orderStatus, setOrderStatus] = useState("");
-  let [orderType, setOrderType] = useState("");
+  let [orderStatus, setOrderStatus] = useState(statusOfOrder || "");
+  let [orderType, setOrderType] = useState(typeOfOrder || "");
 
-  console.log(orderStatus);
+  // console.log(orderStatus);
 
   const navigate = useNavigate();
 
@@ -118,7 +125,7 @@ const OrderLists = () => {
   // handle error
   if (error) return <h1>{error.message}</h1>;
 
-  console.log(searchKeyWord);
+  // console.log(searchKeyWord);
 
   let items = data?.result;
 
@@ -141,15 +148,30 @@ const OrderLists = () => {
             className="select select-bordered join-item"
           >
             <option onClick={() => handleStatus("All")}>All</option>{" "}
-            <option onClick={() => handleStatus("Delivered")}>Delivered</option>{" "}
-            <option onClick={() => handleStatus("Absence")}>Absence</option>{" "}
+            <option
+              selected={orderStatus === "Delivered"}
+              onClick={() => handleStatus("Delivered")}
+            >
+              Delivered
+            </option>{" "}
+            <option
+              selected={orderStatus === "Absence"}
+              onClick={() => handleStatus("Absence")}
+            >
+              Absence
+            </option>{" "}
             <option onClick={() => handleStatus("Returned")}>Returned</option>{" "}
             <option onClick={() => handleStatus("Cancelled")}>Cancelled</option>{" "}
             <option onClick={() => handleStatus("Investigation")}>
               Investigation
             </option>{" "}
             <option onClick={() => handleStatus("Regular")}>Regular</option>{" "}
-            <option onClick={() => handleStatus("Pre-Order")}>Pre-Order</option>
+            <option
+              selected={typeOfOrder === "Pre-Order"}
+              onClick={() => handleStatus("Pre-Order")}
+            >
+              Pre-Order
+            </option>
           </select>
         </div>
       </div>

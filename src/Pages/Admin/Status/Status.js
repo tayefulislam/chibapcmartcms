@@ -57,7 +57,7 @@ const Status = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-2">
         <div
-          onClick={() => navigate("/orderLists")}
+          onClick={() => navigate("/orderLists?orderStatus=Delivered")}
           class="card w-full bg-[#dcfce7] shadow-xl "
         >
           {/* <figure class="px-10 pt-10">
@@ -76,7 +76,7 @@ const Status = () => {
         </div>
 
         <div
-          onClick={() => navigate("/orderLists")}
+          onClick={() => navigate("/orderLists?orderType=Pre-Order")}
           class="card w-full bg-[#fff4de] shadow-xl text-black"
         >
           {/* <figure class="px-10 pt-10">
@@ -93,7 +93,7 @@ const Status = () => {
         </div>
 
         <div
-          onClick={() => navigate("/orderLists")}
+          onClick={() => navigate("/orderLists?orderStatus=Absence")}
           class="card w-full bg-[#a1dff4] shadow-xl"
         >
           {/* <figure class="px-10 pt-10">

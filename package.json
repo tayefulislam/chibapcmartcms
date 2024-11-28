@@ -2,8 +2,6 @@
   "name": "chibapcmartcms",
   "version": "0.1.0",
   "private": true,
-
-
   "dependencies": {
     "@tanstack/react-query": "^5.60.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -11,8 +9,13 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
+    "flatpickr": "^4.6.13",
+    "install": "^0.13.0",
+    "moment-timezone": "^0.5.46",
+    "npm": "^10.9.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-flatpickr": "^3.10.13",
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.6",

@@ -97,11 +97,13 @@ const OrderDetails = () => {
     let deliveryStatus = e.target?.deliveryStatus?.value;
     const socialMedia = e.target?.socialMedia?.value || "";
 
-    let searchKeyWord = `${customerName || ""}${address || ""}${
-      postalCode || ""
-    }${phoneNumber || ""} ${trackId || ""}${bankName || ""}${
-      transactionNumber || ""
-    }${bankName || ""}${transactionNumber || ""}`;
+    let searchKeyWord = `${customerName || " "}  "" ${address || " "}  ""${
+      postalCode || " "
+    }  " "${phoneNumber || " "}  "" ${trackId || " "}  ""${
+      bankName || " "
+    }  ""${transactionNumber || " "}  ""${bankName || " "}  ""${
+      transactionNumber || " "
+    }`;
 
     let customerAndOrderDetails = {
       customerId: data?.customerId?._id,
@@ -127,6 +129,7 @@ const OrderDetails = () => {
         timeSlot,
         orderType,
         deliveryStatus,
+        orderPostalCode: postalCode,
         searchKeyWord: searchKeyWord.replace(/\s+/g, " ").trim(),
       },
       paymentDetails: {

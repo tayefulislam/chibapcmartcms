@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import moment from "moment-timezone";
+
 const Status = () => {
+  const [startDate, setStartDate] = useState("2024-10-01");
+  const [endDate, setEndDate] = useState("2024-11-28");
   const navigate = useNavigate();
-  const url = `${process.env.REACT_APP_apiLink}/api/v1/orders/getOrderTotalAmountByStatus`;
+  const url = `${
+    process.env.REACT_APP_apiLink
+  }/api/v1/orders/getOrderTotalAmountByStatus?startDate=${
+    new Date(startDate || new Date()).toISOString().split("T")[0]
+  }&endDate=${new Date(endDate || new Date()).toISOString().split("T")[0]}`;
 
   // GET ALL ORDER DETAILS
   const { isPending, error, data, refetch } = useQuery({
@@ -22,10 +32,49 @@ const Status = () => {
     return acc;
   }, {});
 
-  console.log(dataObject);
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+
+    setStartDate(start);
+    setEndDate(end);
+    refetch();
+  };
+
+  // const handleButtonClick = () => {
+  //   if (startDate && endDate) {
+  //     const formattedStartDate = moment
+  //       .tz(startDate, "Asia/Tokyo")
+  //       .format("YYYY-MM-DD");
+  //     const formattedEndDate = moment
+  //       .tz(endDate, "Asia/Tokyo")
+  //       .format("YYYY-MM-DD");
+  //     console.log(
+  //       `Generating report from ${formattedStartDate} to ${formattedEndDate}`
+  //     );
+  //   } else {
+  //     alert("Please select both start and end dates.");
+  //   }
+  // };
+
+  console.log(new Date(startDate).toISOString().split("T")[0]);
 
   return (
     <div>
+      <div>
+        {" "}
+        {/* <div className="flex justify-center">
+          {" "}
+          <Flatpickr
+            className="w-[190px]"
+            data-enable-time
+            options={{ mode: "range", dateFormat: "Y-m-d" }}
+            value={[startDate, endDate]}
+            onChange={handleDateChange}
+            id="date-range"
+          />{" "}
+        </div>{" "} */}
+        {/* <button onClick={handleButtonClick}>Run Report</button>{" "} */}
+      </div>
       <div className="flex justify-center text-black">
         <div className="stats shadow-lg w-full mx-2 bg-[#f4e8fe] my-2">
           <div className="stat place-items-center">

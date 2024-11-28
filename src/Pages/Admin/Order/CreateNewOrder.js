@@ -47,10 +47,14 @@ const CreateNewOrder = () => {
     const deliveryCost = e.target?.deliveryCost?.value;
     const deliveryStatus = e.target?.deliveryStatus?.value;
     const socialMedia = e.target?.socialMedia?.value || "";
-    let searchKeyWord =
-      `${customerName}  ${address} ${postalCode} ${phoneNumber}  ${trackId} ${bankName} ${transactionNumber} ${bankName} ${transactionNumber}`
-        .replace(/\s+/g, " ")
-        .trim();
+
+    let searchKeyWord = `${customerName || " "}  "" ${address || " "}  ""${
+      postalCode || " "
+    }  " "${phoneNumber || " "}  "" ${trackId || " "}  ""${
+      bankName || " "
+    }  ""${transactionNumber || " "}  ""${bankName || " "}  ""${
+      transactionNumber || " "
+    }`;
 
     let customerAndOrderDetails = {
       customerDetails: {
@@ -59,6 +63,7 @@ const CreateNewOrder = () => {
         postalCode,
         phoneNumber,
         socialMedia,
+        address,
       },
       orderDetails: {
         itemsDetails: [
@@ -68,6 +73,7 @@ const CreateNewOrder = () => {
         ],
         totalAmount,
         deliveryCost,
+        orderPostalCode: postalCode,
         deliveryDate: new Date(deliveryDate),
         timeSlot,
         orderType,
@@ -95,8 +101,6 @@ const CreateNewOrder = () => {
         console.log(response);
 
         if (response?.status === 200) {
-          alert("Order Created Successfully");
-
           e.target.reset();
         }
 

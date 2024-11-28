@@ -160,6 +160,12 @@ const OrderLists = () => {
             >
               Absence
             </option>{" "}
+            <option
+              selected={orderStatus === "Created"}
+              onClick={() => handleStatus("Created")}
+            >
+              Created
+            </option>{" "}
             <option onClick={() => handleStatus("Returned")}>Returned</option>{" "}
             <option onClick={() => handleStatus("Cancelled")}>Cancelled</option>{" "}
             <option onClick={() => handleStatus("Investigation")}>
@@ -383,8 +389,8 @@ const OrderLists = () => {
           </button>{" "}
           <input
             type="number"
-            value={limit}
-            onChange={handleLimitChange}
+            value={page}
+            onChange={handlePageChange}
             className="w-16 text-center"
           />{" "}
           <button

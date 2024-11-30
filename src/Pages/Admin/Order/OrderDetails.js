@@ -369,7 +369,7 @@ const OrderDetails = () => {
             <h3 className="text-lg font-bold">
               {data?.orderId} | {data?.customerId?.customerName}
             </h3>
-            <p className="py-4">This modal works with a hidden checkbox!</p>
+
             <div className="">
               <div className="flex justify-center items-center">
                 <div className="card w-full">

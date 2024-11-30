@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -7,20 +7,32 @@ import "flatpickr/dist/flatpickr.min.css";
 import moment from "moment-timezone";
 
 const Status = () => {
-  const [startDate, setStartDate] = useState("2024-10-01");
-  const [endDate, setEndDate] = useState("2024-11-28");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const navigate = useNavigate();
   const url = `${
     process.env.REACT_APP_apiLink
   }/api/v1/orders/getOrderTotalAmountByStatus?startDate=${
-    new Date(startDate || new Date()).toISOString().split("T")[0]
-  }&endDate=${new Date(endDate || new Date()).toISOString().split("T")[0]}`;
+    startDate && endDate
+      ? moment.tz(startDate, "Asia/Tokyo").format("YYYY-MM-DD")
+      : ""
+  }&endDate=${
+    endDate && startDate
+      ? moment.tz(endDate, "Asia/Tokyo").format("YYYY-MM-DD")
+      : ""
+  }`;
 
   // GET ALL ORDER DETAILS
   const { isPending, error, data, refetch } = useQuery({
     queryKey: [`getOrderTotalAmountByStatus`],
     queryFn: () => fetch(url).then((res) => res.json()),
   });
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      refetch();
+    }
+  }, [startDate, endDate, refetch]);
 
   console.log(data);
 
@@ -40,39 +52,36 @@ const Status = () => {
     refetch();
   };
 
-  // const handleButtonClick = () => {
-  //   if (startDate && endDate) {
-  //     const formattedStartDate = moment
-  //       .tz(startDate, "Asia/Tokyo")
-  //       .format("YYYY-MM-DD");
-  //     const formattedEndDate = moment
-  //       .tz(endDate, "Asia/Tokyo")
-  //       .format("YYYY-MM-DD");
-  //     console.log(
-  //       `Generating report from ${formattedStartDate} to ${formattedEndDate}`
-  //     );
-  //   } else {
-  //     alert("Please select both start and end dates.");
-  //   }
-  // };
+  const handleButtonClick = () => {
+    if (startDate && endDate) {
+      const formattedStartDate = moment.tz(startDate).format("YYYY-MM-DD");
+      const formattedEndDate = moment.tz(endDate).format("YYYY-MM-DD");
+      console.log(
+        `Generating report from ${formattedStartDate} to ${formattedEndDate}`
+      );
+    } else {
+      alert("Please select both start and end dates.");
+    }
+  };
 
-  console.log(new Date(startDate).toISOString().split("T")[0]);
+  console.log(new Date(startDate)?.toISOString().split("T")[0]);
 
   return (
     <div>
       <div>
         {" "}
-        {/* <div className="flex justify-center">
+        <div className="flex justify-center">
           {" "}
           <Flatpickr
-            className="w-[190px]"
+            className="w-[210px] text-lg text-center "
             data-enable-time
+            placeholder="Select Date Range"
             options={{ mode: "range", dateFormat: "Y-m-d" }}
             value={[startDate, endDate]}
             onChange={handleDateChange}
             id="date-range"
           />{" "}
-        </div>{" "} */}
+        </div>{" "}
         {/* <button onClick={handleButtonClick}>Run Report</button>{" "} */}
       </div>
       <div className="flex justify-center text-black">
@@ -106,7 +115,7 @@ const Status = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-2">
         <div
-          onClick={() => navigate("/orderLists?orderStatus=Delivered")}
+          onClick={() => navigate("/orderLists?orderStatus=Delivered&Page=1")}
           class="card w-full bg-[#dcfce7] shadow-xl "
         >
           {/* <figure class="px-10 pt-10">
@@ -125,7 +134,7 @@ const Status = () => {
         </div>
 
         <div
-          onClick={() => navigate("/orderLists?orderType=Pre-Order")}
+          onClick={() => navigate("/orderLists?orderType=Pre-Order&Page=1")}
           class="card w-full bg-[#fff4de] shadow-xl text-black"
         >
           {/* <figure class="px-10 pt-10">
@@ -142,7 +151,7 @@ const Status = () => {
         </div>
 
         <div
-          onClick={() => navigate("/orderLists?orderStatus=Absence")}
+          onClick={() => navigate("/orderLists?orderStatus=Absence&Page=1")}
           class="card w-full bg-[#a1dff4] shadow-xl"
         >
           {/* <figure class="px-10 pt-10">

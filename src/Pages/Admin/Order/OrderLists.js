@@ -4,6 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const OrderLists = () => {
+  const inputStyle = {
+    // Hide arrows in Webkit browsers (Chrome, Safari)
+
+    WebkitAppearance: "none",
+    margin: 0,
+
+    // // Hide arrows in Firefox
+    MozAppearance: "textfield",
+  };
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const typeOfOrder = searchParams.get("orderType");
@@ -44,6 +54,7 @@ const OrderLists = () => {
 
   const handlePageChange = (event) => {
     const newPage = parseInt(event?.target?.value, 10);
+
     setPage(newPage);
   };
 
@@ -111,8 +122,14 @@ const OrderLists = () => {
     setSearchKeyWord(value);
   };
 
+  const handlePageNavigate = () => {
+    navigate(`/orderLists?Page=${page || 1}`);
+  };
+  console.log(page);
+
   useEffect(() => {
     refetch();
+    handlePageNavigate();
   }, [page, limit, searchKeyWord, orderStatus, orderType]);
 
   // // handle loading
@@ -217,6 +234,11 @@ const OrderLists = () => {
                 Delivered
               </div>
             ) : null}
+            {item?.deliveryStatus === "Returning Back" ? (
+              <div className="badge badge-error text-neutral-50">
+                Returning Back
+              </div>
+            ) : null}
 
             {item?.deliveryStatus === "Redelivery Done" ? (
               <div className="badge badge-accent text-neutral-50">
@@ -284,7 +306,12 @@ const OrderLists = () => {
             <div>
               {item?.customerId?.postalCode ? (
                 <div>
-                  <p>〒 {item?.customerId?.postalCode}</p>
+                  <p>
+                    〒 {item?.customerId?.postalCode}{" "}
+                    {item?.paymentObjId?.trackId
+                      ? ` | Track Id :  ${item?.paymentObjId?.trackId}`
+                      : " "}{" "}
+                  </p>
                 </div>
               ) : null}
               {item?.itemsDetails[0].itemName ? (
@@ -383,25 +410,41 @@ const OrderLists = () => {
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
+            className={`${page === 1 ? "opacity-0" : ""}`}
           >
             {" "}
             Previous{" "}
           </button>{" "}
-          <input
-            type="number"
-            value={page}
-            onChange={handlePageChange}
-            className="w-16 text-center"
-          />{" "}
+          <div className="flex items-center">
+            <p>
+              {" "}
+              <input
+                type="number"
+                value={page}
+                style={inputStyle}
+                onChange={handlePageChange}
+                className="w-16 text-center"
+              />{" "}
+              of {data?.totalPages}
+            </p>
+          </div>
           <button
+            className={`${
+              page === data?.totalPages ||
+              data?.totalPages === 0 ||
+              data?.totalPages === null ||
+              page > data?.totalPages ||
+              page < 0
+                ? "opacity-0"
+                : ""
+            }`}
             onClick={() =>
-              setPage((prev) => Math.min(prev + 1, data.totalPages))
+              setPage((prev) => Math.min(prev + 1, data?.totalPages))
             }
-            disabled={page === data?.totalPages}
+            disabled={isPending}
           >
-            {" "}
-            Next{" "}
-          </button>{" "}
+            Next
+          </button>
         </div>{" "}
       </div>
       {/* <div className="flex justify-between mt-4">

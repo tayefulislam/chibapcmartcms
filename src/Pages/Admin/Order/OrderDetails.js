@@ -208,6 +208,12 @@ const OrderDetails = () => {
               </div>
             ) : null}
 
+            {data?.deliveryStatus === "Returning Back" ? (
+              <div className="badge badge-error text-neutral-50">
+                Returning Back
+              </div>
+            ) : null}
+
             {data?.deliveryStatus === "Absence" ? (
               <div className="badge badge-error text-neutral-50">Absence</div>
             ) : null}

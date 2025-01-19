@@ -47,6 +47,7 @@ const CreateNewOrder = () => {
     const deliveryCost = e.target?.deliveryCost?.value;
     const deliveryStatus = e.target?.deliveryStatus?.value;
     const socialMedia = e.target?.socialMedia?.value || "";
+    const profileLink = e.target?.profileLink?.value || "";
 
     let searchKeyWord = `${customerName || " "}  "" ${address || " "}  ""${
       postalCode || " "
@@ -63,6 +64,7 @@ const CreateNewOrder = () => {
         postalCode,
         phoneNumber,
         socialMedia,
+        profileLink,
         address,
       },
       orderDetails: {
@@ -301,7 +303,17 @@ const CreateNewOrder = () => {
                 <input
                   type="text"
                   name="socialMedia"
-                  placeholder="Type SocialMedia Id if have"
+                  placeholder="Type Social Media Id if have"
+                  className="input input-accent w-full max-w-xs"
+                />
+
+                <div className="label">
+                  <span className="label-text"> Profile Link : </span>
+                </div>
+                <input
+                  type="text"
+                  name="profileLink"
+                  placeholder="Type profile Link if have"
                   className="input input-accent w-full max-w-xs"
                 />
 

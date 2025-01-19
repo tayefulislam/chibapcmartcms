@@ -96,6 +96,7 @@ const OrderDetails = () => {
     const deliveryCost = e.target?.deliveryCost?.value;
     let deliveryStatus = e.target?.deliveryStatus?.value;
     const socialMedia = e.target?.socialMedia?.value || "";
+    const profileLink = e.target?.profileLink?.value || "";
 
     let searchKeyWord = `${customerName || " "}  "" ${address || " "}  ""${
       postalCode || " "
@@ -116,6 +117,7 @@ const OrderDetails = () => {
 
         phoneNumber,
         socialMedia,
+        profileLink,
       },
       orderDetails: {
         itemsDetails: [
@@ -684,6 +686,20 @@ const OrderDetails = () => {
                               type="text"
                               name="socialMedia"
                               placeholder="Type SocialMedia Id if have"
+                              defaultValue={data?.customerId?.socialMedia}
+                              className="input input-accent w-full max-w-xs"
+                            />
+                            <div className="label">
+                              <span className="label-text">
+                                {" "}
+                                Profile Link :{" "}
+                              </span>
+                            </div>
+                            <input
+                              type="text"
+                              name="profileLink"
+                              placeholder="Type profile Link if have"
+                              defaultValue={data?.customerId?.profileLink}
                               className="input input-accent w-full max-w-xs"
                             />
                             <div className="label">
